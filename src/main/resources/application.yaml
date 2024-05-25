@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: tourismo
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tourismo
+    username: tourismo
+    password: tourismo
