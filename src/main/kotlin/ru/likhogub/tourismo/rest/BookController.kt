@@ -15,6 +15,20 @@ class BookController(val bookService: BookService) {
         @RequestBody book: Book
     ): Book = bookService.createBook(tourId, checkInId, book)
 
+    @PutMapping("/tours/{tourId}/checkins/{checkInId}/books/{bookId}/approval")
+    fun approveBook(
+        @PathVariable("tourId") tourId: String,
+        @PathVariable("checkInId") checkInId: String,
+        @PathVariable("bookId") bookId: String
+    ): Book = bookService.approveBook(tourId, checkInId, bookId)
+
+    @PutMapping("/tours/{tourId}/checkins/{checkInId}/books/{bookId}/rejection")
+    fun rejectBook(
+        @PathVariable("tourId") tourId: String,
+        @PathVariable("checkInId") checkInId: String,
+        @PathVariable("bookId") bookId: String
+    ): Book = bookService.rejectBook(tourId, checkInId, bookId)
+
     @GetMapping("/books/search")
     fun searchBooks(): List<Book> = bookService.searchBooks()
 }

@@ -14,4 +14,9 @@ class BookDataService {
     }
 
     fun findAll(): List<Book> = data.values.toList()
+
+    fun findRequiredByTourIdAndCheckInIdAndBookId(tourId: String, checkInId: String, bookId: String): Book = data
+        .values
+        .find { book -> book.id == bookId && book.tourId == tourId && book.checkInId == checkInId }
+        ?: throw RuntimeException("book.not.found")
 }
