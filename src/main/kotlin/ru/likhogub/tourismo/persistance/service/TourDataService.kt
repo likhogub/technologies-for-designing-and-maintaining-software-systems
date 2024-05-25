@@ -13,6 +13,11 @@ class TourDataService {
         return tour
     }
 
+    fun findRequiredById(tourId: String): Tour = data
+        .values
+        .find { tour -> tour.id == tourId }
+        ?: throw RuntimeException("tour.not.found")
+
     fun findAll(location: String?): List<Tour> = data
         .values
         .filter {
