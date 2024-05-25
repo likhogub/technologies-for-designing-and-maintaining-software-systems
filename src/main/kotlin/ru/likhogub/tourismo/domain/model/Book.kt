@@ -5,9 +5,11 @@ class Book(
     var tourId: String?,
     var checkInId: String?,
     val tourists: List<Tourist>,
-    val touristsCount: Int = tourists.size,
     var status: BookStatus?,
-)
+) {
+    val touristsCount
+        get() = tourists.size
+}
 
 enum class BookStatus {
 

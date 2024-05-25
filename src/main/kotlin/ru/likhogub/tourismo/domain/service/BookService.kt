@@ -30,6 +30,11 @@ class BookService(val bookDataService: BookDataService,
         if (book.status != BookStatus.PENDING) {
             throw RuntimeException("book.not.pending")
         }
+        val checkIn = checkInDataService.findRequiredByIdAndTourId(checkInId, tourId)
+        if (checkIn.availableCount!! < book.touristsCount) {
+            throw RuntimeException("no.places.available")
+        }
+        checkIn.availableCount = checkIn.availableCount!! - book.touristsCount
         book.status = BookStatus.APPROVED
         return bookDataService.save(book)
     }
