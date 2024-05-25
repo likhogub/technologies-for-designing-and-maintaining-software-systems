@@ -2,24 +2,17 @@ package ru.likhogub.tourismo.persistance.service
 
 import org.springframework.stereotype.Service
 import ru.likhogub.tourismo.domain.model.CheckIn
+import ru.likhogub.tourismo.persistance.repository.CheckInRepository
 import java.time.LocalDate
 
 @Service
-class CheckInDataService {
+class CheckInDataService(val checkInRepository: CheckInRepository) {
 
-    private val data = mutableMapOf<String, CheckIn>()
+    fun save(checkIn: CheckIn): CheckIn = checkInRepository.save(checkIn)
 
-    fun save(checkIn: CheckIn): CheckIn {
-        data[checkIn.id!!] = checkIn
-        return checkIn
-    }
-
-    fun findRequiredByIdAndTourId(id: String, tourId: String): CheckIn {
-        return data
-            .values
-            .find { checkIn -> checkIn.id == id && checkIn.tourId == tourId }
-            ?: throw RuntimeException("checkin.not.found")
-    }
+    fun findRequiredByIdAndTourId(id: String, tourId: String): CheckIn = checkInRepository
+        .findByIdAndTourId(id, tourId)
+        .orElseThrow { RuntimeException("checkin.not.found") }
 
     fun findAll(
         tourId: String,
@@ -27,8 +20,8 @@ class CheckInDataService {
         startDateTo: LocalDate?,
         endDateFrom: LocalDate?,
         endDateTo: LocalDate?
-    ): List<CheckIn> = data
-        .values
+    ): List<CheckIn> = checkInRepository
+        .findAll()
         .filter { checkIn ->
             if (startDateFrom != null) {
                 !checkIn.startDateTime.isBefore(startDateFrom.atStartOfDay())

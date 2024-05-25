@@ -5,3 +5,10 @@ spring:
     url: jdbc:postgresql://localhost:5432/tourismo
     username: tourismo
     password: tourismo
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: update
+        show-sql: true

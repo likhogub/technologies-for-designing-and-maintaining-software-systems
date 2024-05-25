@@ -2,21 +2,16 @@ package ru.likhogub.tourismo.persistance.service
 
 import org.springframework.stereotype.Service
 import ru.likhogub.tourismo.domain.model.Book
+import ru.likhogub.tourismo.persistance.repository.BookRepository
 
 @Service
-class BookDataService {
+class BookDataService(val bookRepository: BookRepository) {
 
-    private val data = mutableMapOf<String, Book>()
+    fun save(book: Book): Book = bookRepository.save(book)
 
-    fun save(book: Book): Book {
-        data[book.id!!] = book
-        return book
-    }
+    fun findAll(): List<Book> = bookRepository.findAll()
 
-    fun findAll(): List<Book> = data.values.toList()
-
-    fun findRequiredByTourIdAndCheckInIdAndBookId(tourId: String, checkInId: String, bookId: String): Book = data
-        .values
-        .find { book -> book.id == bookId && book.tourId == tourId && book.checkInId == checkInId }
-        ?: throw RuntimeException("book.not.found")
+    fun findRequiredByTourIdAndCheckInIdAndBookId(tourId: String, checkInId: String, bookId: String): Book = bookRepository
+            .findByIdAndTourIdAndCheckInId(bookId, tourId, checkInId)
+            .orElseThrow { RuntimeException("book.not.found") }
 }
