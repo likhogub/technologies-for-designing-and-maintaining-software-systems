@@ -13,5 +13,13 @@ class TourDataService {
         return tour
     }
 
-    fun findAll(): List<Tour> = data.values.toList()
+    fun findAll(location: String?): List<Tour> = data
+        .values
+        .filter {
+            if (location != null) {
+                it.location == location
+            } else {
+                true
+            }
+        }
 }

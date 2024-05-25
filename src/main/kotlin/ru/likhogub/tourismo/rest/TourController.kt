@@ -12,5 +12,5 @@ class TourController(val tourService: TourService) {
     fun createTour(@RequestBody tour: Tour): Tour = tourService.createTour(tour)
 
     @GetMapping("/tours/search")
-    fun searchTours(): List<Tour> = tourService.searchTours()
+    fun searchTours(@RequestParam("location") location: String?): List<Tour> = tourService.searchTours(location)
 }

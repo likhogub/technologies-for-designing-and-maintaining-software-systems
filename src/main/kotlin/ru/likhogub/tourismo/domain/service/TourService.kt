@@ -13,5 +13,5 @@ class TourService(val tourDataService: TourDataService) {
         return tourDataService.save(tour)
     }
 
-    fun searchTours(): List<Tour> = tourDataService.findAll()
+    fun searchTours(location: String?): List<Tour> = tourDataService.findAll(location)
 }
