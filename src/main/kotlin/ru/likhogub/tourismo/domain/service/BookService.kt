@@ -1,6 +1,7 @@
 package ru.likhogub.tourismo.domain.service
 
 import org.springframework.stereotype.Service
+import ru.likhogub.tourismo.config.EmailConfig
 import ru.likhogub.tourismo.domain.model.Book
 import ru.likhogub.tourismo.domain.model.BookStatus
 import ru.likhogub.tourismo.persistance.service.BookDataService
@@ -9,7 +10,9 @@ import java.util.UUID.randomUUID
 
 @Service
 class BookService(val bookDataService: BookDataService,
-                  val checkInDataService: CheckInDataService) {
+                  val checkInDataService: CheckInDataService,
+                  val emailNotifyService: EmailNotifyService,
+                  val emailConfig: EmailConfig) {
 
     fun createBook(tourId: String, checkInId: String, book: Book): Book {
         val checkIn = checkInDataService.findRequiredByIdAndTourId(checkInId, tourId)
@@ -23,7 +26,13 @@ class BookService(val bookDataService: BookDataService,
         book.tourId = tourId
         book.checkInId = checkInId
         book.status = BookStatus.PENDING
-        return bookDataService.save(book)
+        val savedBook = bookDataService.save(book)
+        emailNotifyService.send(
+            emailConfig.moderatorEmail,
+            "Заявка на бронирование",
+            "Создана новая заявка на бронирование ${book.id}"
+        )
+        return savedBook
     }
 
     fun searchBooks(): List<Book> = bookDataService.findAll()
