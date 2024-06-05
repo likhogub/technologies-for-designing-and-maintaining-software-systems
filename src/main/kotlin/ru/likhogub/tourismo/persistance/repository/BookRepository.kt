@@ -9,4 +9,6 @@ interface BookRepository : JpaRepository<Book, String> {
     fun findByIdAndTourIdAndCheckInId(id: String,
                                       tourId: String,
                                       checkIn: String): Optional<Book>
+
+    fun findAllByTourId(tourId: String): List<Book>
 }
