@@ -31,4 +31,9 @@ class BookController(val bookService: BookService) {
 
     @GetMapping("/books/search")
     fun searchBooks(): List<Book> = bookService.searchBooks()
+
+    @GetMapping("/tours/{tourId}/books/search")
+    fun searchBooksForTour(
+        @PathVariable("tourId") tourId: String
+    ): List<Book> = bookService.searchBooksForTour(tourId)
 }

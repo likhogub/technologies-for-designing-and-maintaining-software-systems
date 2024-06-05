@@ -50,4 +50,6 @@ class BookService(val bookDataService: BookDataService,
         book.status = BookStatus.REJECTED
         return bookDataService.save(book)
     }
+
+    fun searchBooksForTour(tourId: String): List<Book> = bookDataService.findAllByTourId(tourId)
 }

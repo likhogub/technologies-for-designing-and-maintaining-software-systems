@@ -14,4 +14,6 @@ class BookDataService(val bookRepository: BookRepository) {
     fun findRequiredByTourIdAndCheckInIdAndBookId(tourId: String, checkInId: String, bookId: String): Book = bookRepository
             .findByIdAndTourIdAndCheckInId(bookId, tourId, checkInId)
             .orElseThrow { RuntimeException("book.not.found") }
+
+    fun findAllByTourId(tourId: String): List<Book> = bookRepository.findAllByTourId(tourId)
 }
