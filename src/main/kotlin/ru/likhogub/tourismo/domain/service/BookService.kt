@@ -13,6 +13,9 @@ class BookService(val bookDataService: BookDataService,
 
     fun createBook(tourId: String, checkInId: String, book: Book): Book {
         val checkIn = checkInDataService.findRequiredByIdAndTourId(checkInId, tourId)
+        if (book.touristsCount == 0) {
+            throw RuntimeException("at.least.one.tourist.required")
+        }
         if (checkIn.availableCount!! < book.touristsCount) {
             throw RuntimeException("no.places.available")
         }
